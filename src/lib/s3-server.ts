@@ -1,11 +1,14 @@
 import { S3 } from "@aws-sdk/client-s3";
 import fs from "fs";
 import path from "path";
+import os from "os";
+
 export async function downloadFromS3(file_key: string): Promise<string> {
   return new Promise(async (resolve, reject) => {
     try {
+      const region = process.env.NEXT_PUBLIC_S3_REGION || "eu-north-1";
       const s3 = new S3({
-        region: "ap-southeast-1",
+        region,
         credentials: {
           accessKeyId: process.env.NEXT_PUBLIC_S3_ACCESS_KEY_ID!,
           secretAccessKey: process.env.NEXT_PUBLIC_S3_SECRET_ACCESS_KEY!,
@@ -17,12 +20,11 @@ export async function downloadFromS3(file_key: string): Promise<string> {
       };
 
       const obj = await s3.getObject(params);
-     const tmpDir = '/tmp';
-      // Ensure /tmp directory exists , this is the solution for this error 
+      const tmpDir = os.tmpdir();
       if (!fs.existsSync(tmpDir)) {
-        fs.mkdirSync(tmpDir);
+        fs.mkdirSync(tmpDir, { recursive: true });
       }
-      const file_name = path.join(tmpDir, `${Date.now().toString()}.pdf`);
+      const file_name = path.join(tmpDir, `queryleaf-${Date.now().toString()}.pdf`);
 
       if (obj.Body instanceof require("stream").Readable) {
         // AWS-SDK v3 has some issues with their typescript definitions, but this works
