@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "export NODE_OPTIONS='--max-old-space-size=8192' && next dev",
+    "dev": "set NODE_OPTIONS=--max-old-space-size=8192 && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.414.0",
-    "@clerk/nextjs": "^4.23.3",
+    "@clerk/nextjs": "^4.31.8",
     "@neondatabase/serverless": "^0.6.0",
     "@pinecone-database/doc-splitter": "^0.0.1",
     "@pinecone-database/pinecone": "^1.0.1",
@@ -34,7 +34,7 @@
     "langchain": "^0.0.150",
     "lucide-react": "^0.274.0",
     "md5": "^2.3.0",
-    "next": "13.4.19",
+    "next": "^13.5.7",
     "openai-edge": "^1.2.2",
     "pdf-parse": "^1.1.1",
     "pdfjs-dist": "^3.10.111",

@@ -8,7 +8,9 @@ import { Toaster } from "react-hot-toast";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "ChatPDF YT",
+  title: "QueryLeaf — AI-Powered PDF Intelligence",
+  description:
+    "Upload any PDF and instantly chat with it using AI. Get answers, summaries, and insights from your documents in seconds.",
 };
 
 export default function RootLayout({
@@ -20,8 +22,18 @@ export default function RootLayout({
     <ClerkProvider>
       <Providers>
         <html lang="en">
-          <body className={inter.className}>{children}</body>
-          <Toaster />
+          <body className={inter.className}>
+            {children}
+            <Toaster
+              toastOptions={{
+                style: {
+                  background: "hsl(220, 20%, 10%)",
+                  color: "hsl(210, 20%, 92%)",
+                  border: "1px solid hsl(220, 16%, 18%)",
+                },
+              }}
+            />
+          </body>
         </html>
       </Providers>
     </ClerkProvider>

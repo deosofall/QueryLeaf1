@@ -1,7 +1,7 @@
 "use client";
 import { uploadToS3 } from "@/lib/s3";
 import { useMutation } from "@tanstack/react-query";
-import { Inbox, Loader2 } from "lucide-react";
+import { Inbox, Loader2, Upload } from "lucide-react";
 import React from "react";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
@@ -29,7 +29,7 @@ const FileUpload = () => {
     },
   });
 
-  const { getRootProps, getInputProps } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: { "application/pdf": [".pdf"] },
     maxFiles: 1,
     onDrop: async (acceptedFiles) => {
@@ -66,26 +66,36 @@ const FileUpload = () => {
     },
   });
   return (
-    <div className="p-2 bg-white rounded-xl">
+    <div className="glass rounded-2xl p-1.5 glow-emerald-sm">
       <div
         {...getRootProps({
-          className:
-            "border-dashed border-2 rounded-xl cursor-pointer bg-gray-50 py-8 flex justify-center items-center flex-col",
+          className: `border-dashed border-2 rounded-xl cursor-pointer py-10 flex justify-center items-center flex-col transition-all duration-300 ${
+            isDragActive
+              ? "border-emerald-500/60 bg-emerald-500/10"
+              : "border-border/60 hover:border-emerald-500/40 hover:bg-emerald-500/5"
+          }`,
         })}
       >
         <input {...getInputProps()} />
         {uploading || isLoading ? (
           <>
             {/* loading state */}
-            <Loader2 className="h-10 w-10 text-blue-500 animate-spin" />
-            <p className="mt-2 text-sm text-slate-400">
-              Spilling Tea to GPT...
+            <Loader2 className="h-10 w-10 text-emerald-500 animate-spin" />
+            <p className="mt-3 text-sm text-muted-foreground">
+              Analyzing your document...
             </p>
           </>
         ) : (
           <>
-            <Inbox className="w-10 h-10 text-blue-500" />
-            <p className="mt-2 text-sm text-slate-400">Drop PDF Here</p>
+            <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-3">
+              <Upload className="w-8 h-8 text-emerald-500" />
+            </div>
+            <p className="text-sm font-medium text-foreground/80">
+              Drop your PDF here
+            </p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              or click to browse · max 10MB
+            </p>
           </>
         )}
       </div>
